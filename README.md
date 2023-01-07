@@ -1,4 +1,4 @@
-# projekat-ers
+# [ERS] - Projekat - Asset Management System
 Asset Management
 
 Ceo projekat se nalazi u grani "project".
