@@ -84,9 +84,85 @@ namespace LocalDevice
             }
         }
 
+        public static void konekcija(LocalDevice device)
+        {
+            // neka po default-u bude podeseno na slanje kontroleru
+            TcpClient client = new TcpClient("127.0.0.1", 8085);
+
+            if (device.Configuration.ToUpper() == "AMS")
+            {
+                client = new TcpClient("127.0.0.1", 8086);
+            }
+            else if (device.Configuration.ToUpper() != "LK")
+            {
+                Console.WriteLine("Greska prilikom dodavanja konfiguracije (AMS/LK).");
+                Environment.Exit(0);
+            }
+
+            // client stream za citanje i pisanje
+            NetworkStream stream = client.GetStream();
+
+            Console.WriteLine("Uspostavljanje konekcije sa serverom...");
+
+            // poruka za server
+            string message = "Podaci o novom lokalnom uredjaju su poslati.";
+
+            string mess = String.Format("USPESNO JE DODAT NOVI LOKALNI UREDJAJ\n ID: {0}\n Type: {1}\n LocalDeviceCode: {2}\n Timestamp: {3}\n Value: {4}\n WorkTime: {5}\n Configuration: {6}", device.Id, device.Type, device.LocalDeviceCode, device.Timestamp, device.Value, device.WorkTime, device.Configuration);
+
+            string xmlString = System.IO.File.ReadAllText("D:\\fakultet\\5 - semestar\\Elementi razvoja softvera\\projekat-step-by-step\\projekat\\LocalDevice\\data.xml");
+            //            string xmlString = System.IO.File.ReadAllText(@"..\..\..\..\" + "data.xml");
+            byte[] data = System.Text.Encoding.ASCII.GetBytes(mess); // ovde prosledjujem ono sta ce da posalje serveru
+
+            //while (true)
+            stream.Write(data, 0, data.Length);
+
+            Console.WriteLine("Sent: {0}", message);
+
+            data = new byte[4096];
+            int bytes = stream.Read(data, 0, data.Length);
+            string response = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+            Console.WriteLine("Received: {0}", response);
+
+            stream.Close();
+            client.Close();
+        }
+
         static void Main()
-        { 
-        
+        {
+            string answer;
+            do
+            {
+                Console.WriteLine("1 - Dodavanje novog Lokalnog uredjaja");
+                Console.WriteLine("2 - Izmena postojeceg lokalnog uredjaja");
+                Console.WriteLine("3 - Izlazak iz programa");
+
+                Console.WriteLine("Izaberite opciju:");
+                answer = Console.ReadLine();
+
+                switch (answer)
+                {
+                    case "1":
+                        LocalDevice device = new LocalDevice();     // korisnik unosi novi lokalni uredjaj
+                        konekcija(device);                          // uspostavlja se konekcija sa konrolerom/ams-om - podaci se upisuju u xml
+
+                        break;
+
+                    case "2":
+                        // modifikovanje postojeceg lokalnog uredjaja
+
+                        break;
+
+                    case "3":
+                        Console.WriteLine("Izlazak iz programa...");
+                        Environment.Exit(0);
+                        break;
+
+                    default:
+                        Console.WriteLine("Nije unet validan unos.");
+                        break;
+                }
+
+            } while (!answer.ToUpper().Equals("X"));
         }
              
     }
