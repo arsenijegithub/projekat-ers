@@ -1,5 +1,5 @@
 # [ERS] - Projekat - Asset Management System
-Asset Management
+AMS
 
 Ceo projekat se nalazi u grani "project".
 
