@@ -1,0 +1,27 @@
+<data>
+  <item>
+    <deviceID>
+    </deviceID>
+    <deviceType>
+    </deviceType>
+    <deviceCode>
+    </deviceCode>
+    <time>
+    </time>
+    <value>
+    </value>
+    <workTime>
+    </workTime>
+    <configuration>
+    </configuration>
+  </item>
+  <item>
+    <deviceId>42</deviceId>
+    <deviceType>ANALOG</deviceType>
+    <deviceCode>24</deviceCode>
+    <time>214124</time>
+    <value>ON</value>
+    <workTime>55</workTime>
+    <configuration>CONTROLLER</configuration>
+  </item>
+</data>
