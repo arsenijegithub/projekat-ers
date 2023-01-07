@@ -1,15 +1,11 @@
 # projekat-ers
 Asset Management
 
+Ceo projekat se nalazi u grani "project".
 
-test test
+Nakon pokretanja solutiona:
+  - izmeniti putanju (staviti lokalnu od data.xml)
 
+  - prvo pokrenuti AMS, potom LocalController i na kraju LocalDevice (debug -> start without debugging)
 
-
-
-ad
-asd
-
-
-
-asd
+  - testovi USKORO
