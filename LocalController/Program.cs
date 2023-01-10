@@ -195,6 +195,14 @@ namespace LocalController
 
             SendXmlFile();
 
+            int timeLeft = 10;                       // max broj iteracija
+            while(timeLeft > 0)
+            {
+                SendXmlFile();
+                Thread.Sleep(5000); // pauzira ga na 5 sekcundi  = 5000 - test, 5 minuta = 300000 ms
+            }
+            Console.WriteLine("Max broj slanja je poslat\n");
+
             /*
             System.Timers.Timer timer = new System.Timers.Timer();
             timer.Interval = 10 * 1000;                                //300 * 1000 = 300000 milisekundi = 5 minuta
