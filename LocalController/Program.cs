@@ -8,6 +8,21 @@ using System.Timers;
 
 namespace LocalController
 {
+    public static void listaSvihUredjaja()
+    {
+        // izlistati sve uredjaje iz xml fajla
+        // provera da li je xml fajl prazan... break itd
+
+        XmlDocument doc = new XmlDocument();
+        doc.Load("data.xml");
+        XmlNodeList nodes = doc.SelectNodes("//data");
+        foreach (XmlNode node in nodes)
+        {
+            Console.WriteLine(node.InnerText);
+        }
+
+
+    }
     class Program
     {
         // u main-u je implementirano primanje podataka od lokalnog uredjaja

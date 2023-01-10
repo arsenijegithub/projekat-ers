@@ -155,6 +155,7 @@ namespace LocalDevice
                         
                         Console.WriteLine("Izaberite ID uredjaja koji zelite da modifikujete:");
                         id_temp = Convert.ToInt32(Console.ReadLine());
+
                         break;
 
                     case "3":
