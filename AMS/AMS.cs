@@ -50,6 +50,6 @@ namespace AMS
                 Console.WriteLine("Greska kod AMS-a.");
             }
         }
-          
+
     }
 }

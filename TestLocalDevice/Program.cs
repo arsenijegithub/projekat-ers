@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestAMS
+namespace TestLocalDevice
 {
-    class TestAMS
+    class Program
     {
         static void Main(string[] args)
         {

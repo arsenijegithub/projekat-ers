@@ -164,6 +164,6 @@ namespace LocalDevice
 
             } while (!answer.ToUpper().Equals("X"));
         }
-             
+
     }
 }

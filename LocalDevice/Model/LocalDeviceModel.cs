@@ -9,7 +9,7 @@ namespace LocalDevice.Model
 {
     public class LocalDeviceModel
     {
-    //    enum Tip { ANALOG, DIGITAL };
+        //    enum Tip { ANALOG, DIGITAL };
 
         public int Id { get; set; }
 
