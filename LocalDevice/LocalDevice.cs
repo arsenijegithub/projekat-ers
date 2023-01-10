@@ -148,8 +148,13 @@ namespace LocalDevice
                         break;
 
                     case "2":
-                        // modifikovanje postojeceg lokalnog uredjaja
+                        int id_temp;
+                        Console.WriteLine("* LISTA SVIH LOKALNIH UREDJAJA***");
 
+                        listaSvihUredjaja();
+                        
+                        Console.WriteLine("Izaberite ID uredjaja koji zelite da modifikujete:");
+                        id_temp = Convert.ToInt32(Console.ReadLine());
                         break;
 
                     case "3":
