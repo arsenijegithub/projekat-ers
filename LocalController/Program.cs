@@ -42,9 +42,10 @@ namespace LocalController
 
 
 
-            string xmlString = System.IO.File.ReadAllText("D:\\fakultet\\5 - semestar\\Elementi razvoja softvera\\projekat-step-by-step\\projekat\\LocalDevice\\data.xml");
-            //            string xmlString = System.IO.File.ReadAllText(@"..\..\..\..\" + "data.xml");
-            byte[] data = System.Text.Encoding.ASCII.GetBytes(xmlString); // ovde prosledjujem ono sta ce da posalje serveru
+           string path = @"..\..\..\..\data.xml";
+           string dir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+           string absolutePath = Path.Combine(dir, path);
+            byte[] data = System.Text.Encoding.ASCII.GetBytes(absolutePath); // ovde prosledjujem ono sta ce da posalje serveru
 
             //while (true)
             stream.Write(data, 0, data.Length);
@@ -122,9 +123,11 @@ namespace LocalController
                         XmlDocument doc = new XmlDocument();
 
 
-                        //                        string path = System.IO.File.ReadAllText(@"..\..\..\..\" + "data.xml");
-                        string path = "D:\\fakultet\\5 - semestar\\Elementi razvoja softvera\\projekat-step-by-step\\projekat\\LocalDevice\\data.xml";
-                        doc.Load(path);
+                        string path = @"..\..\..\..\data.xml";
+                        string dir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+                        string absolutePath = Path.Combine(dir, path);
+                        doc.Load(absolutePath);
+
                         XmlNode item = doc.CreateElement("item");
 
                         XmlNode deviceId = doc.CreateElement("deviceId");

@@ -109,8 +109,9 @@ namespace LocalDevice
 
             string mess = String.Format("USPESNO JE DODAT NOVI LOKALNI UREDJAJ\n ID: {0}\n Type: {1}\n LocalDeviceCode: {2}\n Timestamp: {3}\n Value: {4}\n WorkTime: {5}\n Configuration: {6}", device.Id, device.Type, device.LocalDeviceCode, device.Timestamp, device.Value, device.WorkTime, device.Configuration);
 
-            string xmlString = System.IO.File.ReadAllText("D:\\fakultet\\5 - semestar\\Elementi razvoja softvera\\projekat-step-by-step\\projekat\\LocalDevice\\data.xml");
-            //            string xmlString = System.IO.File.ReadAllText(@"..\..\..\..\" + "data.xml");
+            string path = @"..\..\..\..\data.xml";
+            string dir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string absolutePath = Path.Combine(dir, path);
             byte[] data = System.Text.Encoding.ASCII.GetBytes(mess); // ovde prosledjujem ono sta ce da posalje serveru
 
             //while (true)
