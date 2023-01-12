@@ -4,6 +4,7 @@ using System;
 using System.Xml;
 using System.Net.Sockets;
 using System.Text;
+using System.Net;
 
 namespace AMS
 {
@@ -13,7 +14,9 @@ namespace AMS
         {
             // primanje podataka od lokalnog uredjaja
             // server ceka nove konekcije... slusa
-            TcpListener server = new TcpListener(8086);
+            IPAddress localAddr = IPAddress.Parse("127.0.0.1");
+
+            TcpListener server = new TcpListener(localAddr, 8086);
             server.Start();
 
             Console.WriteLine("AMS ceka novu konekciju...");
@@ -31,13 +34,13 @@ namespace AMS
                 string request = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
 
                 // sve sto sam dobio od klijenta
-                Console.WriteLine("[AMS] Primljeno: {0}", request);
+                Console.WriteLine("[LK->AMS] Primljeno: {0}", request);
 
                 // slanje odgovora nazad klijentu
                 string response = "AMS je uspesno primio podatke o lokalnom uredjaju...";
                 data = System.Text.Encoding.ASCII.GetBytes(response);
                 stream.Write(data, 0, data.Length);
-                Console.WriteLine("[AMS] Poslato: {0}", response);
+                Console.WriteLine("[AMS->LK] Poslato: {0}", response);
 
                 stream.Close();
                 client.Close();

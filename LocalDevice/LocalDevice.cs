@@ -10,6 +10,7 @@ using System.Xml;
 using System.Net.Sockets;
 using static LocalDevice.Model.ILocalDevice;
 using System.Text;
+using System.IO;
 
 namespace LocalDevice
 {
@@ -82,6 +83,22 @@ namespace LocalDevice
                     Configuration = Console.ReadLine();
                 } while (Configuration.ToUpper().Equals("AMS") && Configuration.ToUpper().Equals("LK"));
             }
+        }
+
+        public static void listaSvihUredjaja()
+        {
+            // izlistati sve uredjaje iz xml fajla
+            // provera da li je xml fajl prazan... break itd
+
+            XmlDocument doc = new XmlDocument();
+            doc.Load("data.xml");
+            XmlNodeList nodes = doc.SelectNodes("//data");
+            foreach (XmlNode node in nodes)
+            {
+                Console.WriteLine(node.InnerText);
+            }
+
+
         }
 
         public static void konekcija(LocalDevice device)

@@ -5,28 +5,15 @@ using System;
 using System.Xml;
 using System.Text;
 using System.Timers;
+using System.IO;
+using System.Collections.Generic;
+using System.Net;
+using System.Threading;
 
 namespace LocalController
 {
-    public static void listaSvihUredjaja()
-    {
-        // izlistati sve uredjaje iz xml fajla
-        // provera da li je xml fajl prazan... break itd
-
-        XmlDocument doc = new XmlDocument();
-        doc.Load("data.xml");
-        XmlNodeList nodes = doc.SelectNodes("//data");
-        foreach (XmlNode node in nodes)
-        {
-            Console.WriteLine(node.InnerText);
-        }
-
-
-    }
     class Program
     {
-        // u main-u je implementirano primanje podataka od lokalnog uredjaja
-        // a ovde slanje xml-a ams-u
         public static void SendXmlFile()
         {
             // neka po default-u bude podeseno na slanje kontroleru
@@ -40,159 +27,158 @@ namespace LocalController
             // poruka za server
             string message = "Podaci o novom lokalnom uredjaju su poslati.";
 
+            string path = @"..\..\..\..\data.xml";
+            string dir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string absolutePath = Path.Combine(dir, path);
 
+            byte[] data = System.Text.Encoding.ASCII.GetBytes(File.ReadAllText(absolutePath)); // ovde prosledjujem ono sta ce da posalje serveru
 
-           string path = @"..\..\..\..\data.xml";
-           string dir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-           string absolutePath = Path.Combine(dir, path);
-            byte[] data = System.Text.Encoding.ASCII.GetBytes(absolutePath); // ovde prosledjujem ono sta ce da posalje serveru
-
-            //while (true)
             stream.Write(data, 0, data.Length);
 
-            Console.WriteLine("[LK] Poslato: {0}", data);
+            Console.WriteLine("[LK->AMS] Poslato: {0}", data);
 
             data = new byte[4096];
             int bytes = stream.Read(data, 0, data.Length);
             string response = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-            Console.WriteLine("[LK] Primljeno: {0}", response);
+            Console.WriteLine("[LK->AMS] Primljeno: {0}", response);
 
             stream.Close();
             client.Close();
         }
 
+        public static List<string> IsolateValues(string fullMessage)
+        {
+            List<string> vrednosti = new List<string>();
+
+            string all, type, val, config;
+            int id, code, tempTime, worktime;
+
+            all = Convert.ToString(fullMessage);
+
+            string[] lines = all.Split('\n');
+
+            id = Convert.ToInt32(lines[1].Trim().Remove(0, 4));
+            vrednosti.Add(Convert.ToString(id));
+
+            type = lines[2].Trim().Remove(0, 6);
+            vrednosti.Add(type);
+
+            code = Convert.ToInt32(lines[3].Trim().Remove(0, 17));
+            vrednosti.Add(Convert.ToString(code));
+
+            tempTime = Convert.ToInt32(lines[4].Trim().Remove(0, 11));
+            vrednosti.Add(Convert.ToString(tempTime));
+
+            val = lines[5].Trim().Remove(0, 7);
+            vrednosti.Add(val);
+
+            worktime = Convert.ToInt32(lines[6].Trim().Remove(0, 10));
+            vrednosti.Add(Convert.ToString(worktime));
+
+            config = lines[7].Trim().Remove(0, 15);
+            vrednosti.Add(config);
+
+            return vrednosti;
+
+        }
+
+        public static void WriteToXML(string fullMessage)
+        {
+
+            List<string> vr = new List<string>();
+
+            string path = @"..\..\..\..\data.xml";
+            string dir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string absolutePath = Path.Combine(dir, path);
+            //Console.WriteLine("APSOLUTNA PUTANJA TEST 1: " + absolutePath);
+
+            vr = IsolateValues(fullMessage);
+
+            List<string> lista = new List<string>();
+
+            lista = IsolateValues(fullMessage);
+
+            XmlDocument doc = new XmlDocument();
+
+            doc.Load(absolutePath);
+
+            XmlNode item = doc.CreateElement("item");
+
+            XmlNode deviceID = doc.CreateElement("deviceID");
+            deviceID.InnerText = vr[0];
+            item.AppendChild(deviceID);
+
+            XmlNode deviceType = doc.CreateElement("deviceType");
+            deviceType.InnerText = vr[1];
+            item.AppendChild(deviceType);
+
+            XmlNode deviceCode = doc.CreateElement("deviceCode");
+            deviceCode.InnerText = vr[2];
+            item.AppendChild(deviceCode);
+
+            XmlNode time = doc.CreateElement("time");
+            time.InnerText = vr[3];
+            item.AppendChild(time);
+
+            XmlNode value = doc.CreateElement("value");
+            value.InnerText = vr[4];
+            item.AppendChild(value);
+
+            XmlNode workTime = doc.CreateElement("workTime");
+            workTime.InnerText = vr[5];
+            item.AppendChild(workTime);
+
+            XmlNode configuration = doc.CreateElement("configuration");
+            configuration.InnerText = vr[6];
+            item.AppendChild(configuration);
+
+            doc.DocumentElement.AppendChild(item);
+
+            doc.Save(absolutePath);
+
+            Console.WriteLine("Uspesno dodavanje podataka u XML datoteku.");
+        }
+
         public static void ReciveFromDevice(int id, string type, int code, int tempTime, string val, double worktime, string config, string all)
         {
-            TcpListener server = new TcpListener(8085);
-            server.Start();
-
-            Console.WriteLine("Lokalni kontroler ceka novu konekciju...");
-
             try
             {
-                while (true)
-                {
-                    // prihvatanje konekcije od klijenta
-                    TcpClient client = server.AcceptTcpClient();
-                    NetworkStream stream = client.GetStream();
+                IPAddress localAddr = IPAddress.Parse("127.0.0.1");
 
-                    // citanje upita od klijenta
-                    byte[] data = new byte[4096];
-                    int bytes = stream.Read(data, 0, data.Length);
+                TcpListener server = new TcpListener(localAddr, 8001);
+                server.Start();
 
-                    string request = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+                Console.WriteLine("Lokalni kontroler ceka novu konekciju...");
 
-                    /*
-                    if (request == "3")
-                    {
-                        stream.Close();
-                        client.Close();
+                TcpClient client = server.AcceptTcpClient();
+                NetworkStream stream = client.GetStream();
 
-                        server.Stop();
+                // citanje upita od klijenta
+                byte[] data = new byte[4096];
+                int bytes = stream.Read(data, 0, data.Length);
 
-                        break;
-                    }
-                    */
+                string request = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
 
-                    // sve sto sam dobio od klijenta
-                    Console.WriteLine("[LK] Primljeno: {0}", request);
+                // sve sto sam dobio od klijenta
+                Console.WriteLine("[LU->LK] Primljeno: {0}", request);
 
-                    // slanje odgovora nazad klijentu
-                    string response = "Lokalni kontroler je uspesno primio podatke o lokalnom uredjaju...";
-                    data = System.Text.Encoding.ASCII.GetBytes(response);
-                    stream.Write(data, 0, data.Length);
-                    Console.WriteLine("[LK] Poslato: {0}", response);
+                WriteToXML(request); ;
 
-                    // e sad rasparcamo string tako da uzmemo samo vrednosti o novom lokalnom uredjaju i kasnije to postavimo u xml fajl
+                // slanje odgovora nazad klijentu
+                string response = "Lokalni kontroler je uspesno primio podatke o lokalnom uredjaju...";
+                data = System.Text.Encoding.ASCII.GetBytes(response);
+                stream.Write(data, 0, data.Length);
+                Console.WriteLine("[LK->LU] Poslato: {0}", response);
 
-                    try
-                    {
-                        all = Convert.ToString(request);
+                stream.Close();
+                client.Close();
 
-                        string[] lines = all.Split('\n');
-
-                        id = Convert.ToInt32(lines[1].Trim().Remove(0, 4));
-                        type = lines[2].Trim().Remove(0, 6);
-                        code = Convert.ToInt32(lines[3].Trim().Remove(0, 17));
-                        tempTime = Convert.ToInt32(lines[4].Trim().Remove(0, 11));
-                        val = lines[5].Trim().Remove(0, 7);
-                        worktime = Convert.ToInt32(lines[6].Trim().Remove(0, 10));
-                        config = lines[7].Trim().Remove(0, 15);
-
-                        // dodavanje tih podata u xml fajl
-                        XmlDocument doc = new XmlDocument();
-
-
-                        string path = @"..\..\..\..\data.xml";
-                        string dir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-                        string absolutePath = Path.Combine(dir, path);
-                        doc.Load(absolutePath);
-
-                        XmlNode item = doc.CreateElement("item");
-
-                        XmlNode deviceId = doc.CreateElement("deviceId");
-
-                        deviceId.InnerText = id.ToString();
-                        item.AppendChild(deviceId);
-                        doc.DocumentElement.AppendChild(item);
-
-                        XmlNode deviceType = doc.CreateElement("deviceType");
-
-                        deviceType.InnerText = type.ToString();
-                        item.AppendChild(deviceType);
-                        doc.DocumentElement.AppendChild(item);
-
-                        XmlNode deviceCode = doc.CreateElement("deviceCode");
-
-                        deviceCode.InnerText = code.ToString();
-                        item.AppendChild(deviceCode);
-                        doc.DocumentElement.AppendChild(item);
-
-                        XmlNode time = doc.CreateElement("time");
-
-                        time.InnerText = tempTime.ToString();
-                        item.AppendChild(time);
-                        doc.DocumentElement.AppendChild(item);
-
-                        XmlNode value = doc.CreateElement("value");
-
-                        value.InnerText = val.ToString();
-                        item.AppendChild(value);
-                        doc.DocumentElement.AppendChild(item);
-
-                        XmlNode workTime = doc.CreateElement("workTime");
-
-                        workTime.InnerText = worktime.ToString();
-                        item.AppendChild(workTime);
-                        doc.DocumentElement.AppendChild(item);
-
-                        XmlNode configuration = doc.CreateElement("configuration");
-
-                        configuration.InnerText = config.ToString();
-                        item.AppendChild(configuration);
-                        doc.DocumentElement.AppendChild(item);
-
-                        doc.Save(path);
-
-                        Console.WriteLine("Uspesno dodavanje podataka u XML datoteku.");
-
-
-                        stream.Close();
-                        client.Close();
-
-                        server.Stop();
-
-                    }
-                    catch
-                    {
-                        Console.WriteLine("Neuspesno dodavanje podataka u XML datoteku.");
-                    }
-                }
+                server.Stop();
 
             }
-            catch
+            catch (Exception)
             {
-                Console.WriteLine("Greska kod kontrolera - servera.");
+                Console.WriteLine("Greska kod kontrolera - servera");
             }
         }
 
