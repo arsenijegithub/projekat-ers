@@ -101,6 +101,28 @@ namespace LocalDevice
 
         }
 
+        public static void modifikacijaUredjaj(string idMod, string noviId)
+        {
+            string putanja = @"..\..\..\..\data.xml";
+            string dir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string absolutePutanja = Path.Combine(dir, putanja);
+
+            XmlDocument doc = new XmlDocument();
+            doc.Load(absolutePutanja);
+
+            XmlNode root = doc.DocumentElement;
+            XmlNode deviceID;
+
+            deviceID = doc.SelectSingleNode("data/item[deviceID='" + idMod + "']/deviceID");
+
+            // pronasli smo deviceID za trazeni id -> Console.WriteLine("**data/item[deviceID='1']/deviceID** => " + deviceID.InnerText);
+
+            deviceID.InnerText = noviId;
+
+            doc.Save(absolutePutanja);
+        }
+
+
         public static void konekcija(LocalDevice device)
         {
             // neka po default-u bude podeseno na slanje kontroleru
@@ -166,13 +188,18 @@ namespace LocalDevice
                         break;
 
                     case "2":
-                        int id_temp;
-                        Console.WriteLine("* LISTA SVIH LOKALNIH UREDJAJA***");
+                        string id_temp, noviId;
+                        Console.WriteLine("*** LISTA SVIH LOKALNIH UREDJAJA***");
 
                         listaSvihUredjaja();
                         
                         Console.WriteLine("Izaberite ID uredjaja koji zelite da modifikujete:");
-                        id_temp = Convert.ToInt32(Console.ReadLine());
+                        id_temp = Console.ReadLine();
+
+                        Console.WriteLine("Izaberite novi ID:");
+                        noviId = Console.ReadLine();
+
+                        modifikacijaUredjaj(id_temp, noviId);
 
                         break;
 
