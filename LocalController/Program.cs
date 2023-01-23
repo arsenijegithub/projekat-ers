@@ -14,10 +14,16 @@ namespace LocalController
 {
     class Program
     {
-        public static void SendXmlFile()
+        public static class Globals
+        {
+            public const string IP = "127.0.0.1";
+            public const int PORT = 8001;
+        }
+
+        static void SendXmlFile(Object state)
         {
             // neka po default-u bude podeseno na slanje kontroleru
-            TcpClient client = new TcpClient("127.0.0.1", 8086);
+            TcpClient client = new TcpClient("127.0.0.1", 8002);
 
             // client stream za citanje i pisanje
             NetworkStream stream = client.GetStream();
@@ -139,49 +145,69 @@ namespace LocalController
             Console.WriteLine("Uspesno dodavanje podataka u XML datoteku.");
         }
 
-        public static void ReciveFromDevice(int id, string type, int code, int tempTime, string val, double worktime, string config, string all)
+        static void ReaderFunction(object client)
         {
-            try
+
+            TcpClient tcpClient = (TcpClient)client;
+
+            NetworkStream stream = tcpClient.GetStream();
+            byte[] buffer = new byte[1024];
+            int bytesRead = 0;
+
+            // ako hoćemo da primi samo jednu poruku, izbacićemo while i to je to, ne moramo da brinemo o tajmeru i kada će stići stop. stop je tu samo zbog testiranja.
+            do
             {
-                IPAddress localAddr = IPAddress.Parse("127.0.0.1");
-
-                TcpListener server = new TcpListener(localAddr, 8001);
-                server.Start();
-
-                Console.WriteLine("Lokalni kontroler ceka novu konekciju...");
-
-                TcpClient client = server.AcceptTcpClient();
-                NetworkStream stream = client.GetStream();
-
-                // citanje upita od klijenta
-                byte[] data = new byte[4096];
-                int bytes = stream.Read(data, 0, data.Length);
-
-                string request = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-
-                // sve sto sam dobio od klijenta
-                Console.WriteLine("[LU->LK] Primljeno: {0}", request);
-
-                WriteToXML(request); ;
-
-                // slanje odgovora nazad klijentu
-                string response = "Lokalni kontroler je uspesno primio podatke o lokalnom uredjaju...";
-                data = System.Text.Encoding.ASCII.GetBytes(response);
-                stream.Write(data, 0, data.Length);
-                Console.WriteLine("[LK->LU] Poslato: {0}", response);
-
-                stream.Close();
-                client.Close();
-
-                server.Stop();
-
+                try
+                {
+                    bytesRead = stream.Read(buffer, 0, buffer.Length);
+                }
+                catch (IOException)
+                {
+                    Console.WriteLine(tcpClient.Client.RemoteEndPoint + " forcibly closed by the remote host");
+                }
             }
-            catch (Exception)
+            while (bytesRead < 0);
+
+            string dataReceived = System.Text.Encoding.ASCII.GetString(buffer, 0, bytesRead);
+            Console.WriteLine(tcpClient.Client.RemoteEndPoint + " šalje[" + bytesRead + "] bajta: " + dataReceived);
+
+            WriteToXML(dataReceived);
+
+            stream.Close();
+
+            tcpClient.Client.Close();
+
+        }
+
+        static void ConnectionHandler(object arg)
+        {
+            while (true)
             {
-                Console.WriteLine("Greska kod kontrolera - servera");
+                TcpListener listener = (TcpListener)arg;
+                TcpClient client = listener.AcceptTcpClient();
+                Console.WriteLine("Konekcija od " + client.Client.RemoteEndPoint + " prihvaćena u " + DateTime.Now);
+
+                Thread readerThread = new Thread(ReaderFunction);
+                readerThread.Start(client);
             }
         }
 
+        static void WorkerFunction(Object state)
+        {
+            // Wait for a client to connect
+
+            Console.WriteLine("Primač konekcija: " + DateTime.Now);
+
+            while (true)
+            {
+                TcpListener listener = (TcpListener)state;
+                TcpClient client = listener.AcceptTcpClient();
+                Console.WriteLine("Konekcija od " + client.Client.RemoteEndPoint + " prihvaćena u " + DateTime.Now + "\n");
+
+                Thread readerThread = new Thread(ReaderFunction);
+                readerThread.Start(client);
+            }
+        }
 
         static void Main(string[] args)
         {
@@ -195,24 +221,22 @@ namespace LocalController
 
             string tempRequest = "";
 
-            ReciveFromDevice(tempId, tempType, tempCode, tempTime, tempValue, tempWorkTime, tempConfig, tempRequest);
+            IPAddress localAddr = IPAddress.Parse(Globals.IP);
+            TcpListener server = new TcpListener(localAddr, Globals.PORT);
+            server.Start();
 
-            SendXmlFile();
+            Console.WriteLine("Lokalni kontroler je pokrenut u " + DateTime.Now + " " + Globals.IP + ":" + Globals.PORT);
 
-            int timeLeft = 10;                       // max broj iteracija
-            while(timeLeft > 0)
-            {
-                SendXmlFile();
-                Thread.Sleep(5000); // pauzira ga na 5 sekcundi  = 5000 - test, 5 minuta = 300000 ms
-            }
-            Console.WriteLine("Max broj slanja je poslat\n");
+            Thread connectionHandlerThread = new Thread(ConnectionHandler);
+            connectionHandlerThread.Start(server);
 
-            /*
-            System.Timers.Timer timer = new System.Timers.Timer();
-            timer.Interval = 10 * 1000;                                //300 * 1000 = 300000 milisekundi = 5 minuta
-            timer.Elapsed += (sender, e) => SendXmlFile();
-            timer.Start();
-            */
+            Thread workerThread = new Thread(WorkerFunction);
+            workerThread.Start(server);
+
+            // na svakih 300000ms = 5 minuta salje celu xml datoteku ams-u
+            System.Threading.Timer timer = new System.Threading.Timer(new TimerCallback(SendXmlFile), null, 300000, 300000);  // prvih 5000 je posle pokretanja za koliko ce biti pozvana funkcija/tajmer, drugi na koliko sledeći put
+
+            workerThread.Join();
         }
     }
 }
