@@ -34,6 +34,7 @@ namespace LocalController
             string message = "Podaci o novom lokalnom uredjaju su poslati.";
 
             string path = @"..\..\..\..\data.xml";
+            //string path = "data.xml";
             string dir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             string absolutePath = Path.Combine(dir, path);
 
@@ -90,7 +91,6 @@ namespace LocalController
 
         public static void WriteToXML(string fullMessage)
         {
-
             List<string> vr = new List<string>();
 
             string path = @"..\..\..\..\data.xml";
