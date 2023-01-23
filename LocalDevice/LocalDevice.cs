@@ -11,6 +11,8 @@ using System.Net.Sockets;
 using static LocalDevice.Model.ILocalDevice;
 using System.Text;
 using System.IO;
+using System.Net;
+using System.Threading;
 
 namespace LocalDevice
 {
@@ -87,15 +89,20 @@ namespace LocalDevice
 
         public static void listaSvihUredjaja()
         {
-            // izlistati sve uredjaje iz xml fajla
-            // provera da li je xml fajl prazan... break itd
+            string putanja = @"..\..\..\..\data.xml";
+            string dir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string absolutePutanja = Path.Combine(dir, putanja);
 
             XmlDocument doc = new XmlDocument();
-            doc.Load("data.xml");
-            XmlNodeList nodes = doc.SelectNodes("//data");
-            foreach (XmlNode node in nodes)
+            doc.Load(absolutePutanja);
+            if (File.ReadAllText(absolutePutanja).Length == 0)
             {
-                Console.WriteLine(node.InnerText);
+                Console.WriteLine("XML datoteka je prazna");
+            }
+            else
+            {
+                Console.WriteLine("*** LISTA LOKALNIH UREDJAJA ***");
+                Console.WriteLine(File.ReadAllText(absolutePutanja));
             }
 
 
@@ -123,48 +130,67 @@ namespace LocalDevice
         }
 
 
-        public static void konekcija(LocalDevice device)
+        static void konekcijaUredjaja(LocalDevice device)
         {
-            // neka po default-u bude podeseno na slanje kontroleru
-            TcpClient client = new TcpClient("127.0.0.1", 8085);
+            IPAddress localAddr = IPAddress.Parse("127.0.0.1");
+            IPEndPoint serverEndPoint1 = new IPEndPoint(localAddr, 8001);
+            IPEndPoint serverEndPoint2 = new IPEndPoint(localAddr, 8002);
 
-            if (device.Configuration.ToUpper() == "AMS")
-            {
-                client = new TcpClient("127.0.0.1", 8086);
-            }
-            else if (device.Configuration.ToUpper() != "LK")
-            {
-                Console.WriteLine("Greska prilikom dodavanja konfiguracije (AMS/LK).");
-                Environment.Exit(0);
-            }
+            TcpClient server = new TcpClient();
 
-            // client stream za citanje i pisanje
-            NetworkStream stream = client.GetStream();
-
-            Console.WriteLine("Uspostavljanje konekcije sa serverom...");
-
-            // poruka za server
-            string message = "Podaci o novom lokalnom uredjaju su poslati.";
+            int counter = 0;
 
             string mess = String.Format("USPESNO JE DODAT NOVI LOKALNI UREDJAJ\n ID: {0}\n Type: {1}\n LocalDeviceCode: {2}\n Timestamp: {3}\n Value: {4}\n WorkTime: {5}\n Configuration: {6}", device.Id, device.Type, device.LocalDeviceCode, device.Timestamp, device.Value, device.WorkTime, device.Configuration);
 
-            string path = @"..\..\..\..\data.xml";
-            string dir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            string absolutePath = Path.Combine(dir, path);
-            byte[] data = System.Text.Encoding.ASCII.GetBytes(mess); // ovde prosledjujem ono sta ce da posalje serveru
+            while (!server.Connected || counter == 10)
+            {
+                try
+                {
+                    if (device.Configuration.ToUpper() == "LK")
+                    {
+                        server.Connect(serverEndPoint1);
+                    }
+                    else if (device.Configuration.ToUpper() == "AMS")
+                    {
+                        server.Connect(serverEndPoint2);
+                    }
+                }
+                catch (SocketException)
+                {
+                    Console.WriteLine("LU: LK/AMS nije aktivan na traženoj adresi i portu, pokušavam ponovo...");
+                }
+                finally
+                {
+                    counter++;
+                    Thread.Sleep(100);
+                }
 
-            //while (true)
-            stream.Write(data, 0, data.Length);
+            }
 
-            Console.WriteLine("Sent: {0}", message);
+            if (server.Connected)
+            {
+                Console.WriteLine("U " + DateTime.Now + " povezani smo sa serverom " + server.Client.RemoteEndPoint);
 
-            data = new byte[4096];
-            int bytes = stream.Read(data, 0, data.Length);
-            string response = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-            Console.WriteLine("Received: {0}", response);
+                NetworkStream stream = server.GetStream();
+                byte[] data = System.Text.Encoding.ASCII.GetBytes(mess);
+                try
+                {
+                    stream.Write(data, 0, data.Length);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Greska kod slanja " + ex);
+                }
 
-            stream.Close();
-            client.Close();
+                stream.Close();
+                server.Close();
+
+                Console.WriteLine("U " + DateTime.Now + " zatvorili smo vezu sa serverom\n");
+            }
+            else
+            {
+                Console.WriteLine("Nisam uspeo da se povežem na server/ams, probudite me ponovo kasnije...");
+            }
         }
 
         static void Main()
@@ -174,7 +200,8 @@ namespace LocalDevice
             {
                 Console.WriteLine("1 - Dodavanje novog Lokalnog uredjaja");
                 Console.WriteLine("2 - Izmena postojeceg lokalnog uredjaja");
-                Console.WriteLine("3 - Izlazak iz programa");
+                Console.WriteLine("3 - Lista svih lokalnih uredjaja");
+                Console.WriteLine("4 - Izlazak iz programa");
 
                 Console.WriteLine("Izaberite opciju:");
                 answer = Console.ReadLine();
@@ -183,27 +210,35 @@ namespace LocalDevice
                 {
                     case "1":
                         LocalDevice device = new LocalDevice();     // korisnik unosi novi lokalni uredjaj
-                        konekcija(device);                          // uspostavlja se konekcija sa konrolerom/ams-om - podaci se upisuju u xml
+
+                        Console.WriteLine("\nKlijent upaljen u: " + DateTime.Now);
+                        Thread clientThread = new Thread(() => konekcijaUredjaja(device));
+                        clientThread.Start();
+
+                        clientThread.Join();
 
                         break;
 
                     case "2":
-                        string id_temp, noviId;
-                        Console.WriteLine("*** LISTA SVIH LOKALNIH UREDJAJA***");
-
                         listaSvihUredjaja();
-                        
-                        Console.WriteLine("Izaberite ID uredjaja koji zelite da modifikujete:");
-                        id_temp = Console.ReadLine();
 
-                        Console.WriteLine("Izaberite novi ID:");
+                        string idMod, noviId, noviType, noviCode, noviTime, noviValue, noviWork, noviConfig;
+                        Console.WriteLine("*** UNESITE ID UREDJAJA KOJI MENJATE ***");
+                        idMod = Console.ReadLine();
+
+                        Console.WriteLine("*** UNESITE NOVI ID ***");
                         noviId = Console.ReadLine();
 
-                        modifikacijaUredjaj(id_temp, noviId);
+                        modifikacijaUredjaj(idMod, noviId);
 
                         break;
 
                     case "3":
+                        listaSvihUredjaja();
+
+                        break;
+
+                    case "4":
                         Console.WriteLine("Izlazak iz programa...");
                         Environment.Exit(0);
                         break;
