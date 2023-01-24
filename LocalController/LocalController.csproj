@@ -43,11 +43,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ILocalControllerClass.cs" />
+    <Compile Include="LocalControllerClass.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Wrappers\MyTcpClient.cs" />
+    <Compile Include="Wrappers\MyTcpListener.cs" />
+    <Compile Include="Wrappers\MyXmlReader.cs" />
+    <Compile Include="Wrappers\MyXmlWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LocalDevice\LocalDevice.csproj">
+      <Project>{91bfd1bb-491a-41bb-b228-a01ca57e3d9c}</Project>
+      <Name>LocalDevice</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
