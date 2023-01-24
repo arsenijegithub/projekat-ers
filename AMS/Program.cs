@@ -13,8 +13,11 @@ namespace AMS
         {
             AMSClass ams = new AMSClass();
 
-            Thread thread = new Thread(new ThreadStart(ams.Main));
-            thread.Start();
+
+            // delete later
+            Console.ReadLine();
+            //Thread thread = new Thread(new ThreadStart(ams.Main));
+            //thread.Start();
         }
     }
 }

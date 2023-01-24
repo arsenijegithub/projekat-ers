@@ -34,15 +34,18 @@ namespace AMS
             try
             {
                 TcpClient client = MyServer.AcceptTcpClient();
-                MyStream.Stream = client.GetStream();
+                //MyStream.Stream = client.GetStream();
 
                 byte[] data = new byte[8192];
-                int bytes = MyStream.Read(data, 0, data.Length);
+               // int bytes = MyStream.Read(data, 0, data.Length);
 
                 List<LocalDeviceClass> localDevices = new List<LocalDeviceClass>();
 
                 BinaryFormatter bf = new BinaryFormatter();
             }
+            catch { }
+
+            return false;
         }
 
        

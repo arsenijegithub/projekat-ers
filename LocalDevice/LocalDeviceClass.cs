@@ -116,7 +116,7 @@ namespace LocalDevice
                 client = new TcpClient("127.0.0.1", 4160);
             }
 
-            MyStream.Stream = client.GetStream();
+            //MyStream.Stream = client.GetStream();
         }
 
         public bool PosaljiPodatke()
@@ -131,8 +131,8 @@ namespace LocalDevice
             }
             try
             {
-                MyStream.Write(bytes, 0, bytes.Length);
-                MyStream.Close();
+                //MyStream.Write(bytes, 0, bytes.Length);
+               // MyStream.Close();
                 return true;
             }
             catch (Exception e)

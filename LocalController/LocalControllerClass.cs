@@ -62,10 +62,10 @@ namespace LocalController
 
         public void DeviceListener()
         {
-            PokreniServer();
+            //PokreniServer();
             while (true)
             {
-                PrimiPodatke();
+               // PrimiPodatke();
                 Console.WriteLine("PodaciPrimljeni");
             }
         }
