@@ -44,9 +44,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LocalDevice.cs" />
+    <Compile Include="LocalDeviceClass.cs" />
     <Compile Include="Model\ILocalDevice.cs" />
     <Compile Include="Model\LocalDeviceModel.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Wrappers\MyNetworkStream.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
