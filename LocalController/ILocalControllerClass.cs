@@ -8,6 +8,13 @@ namespace LocalController
 {
     public interface ILocalControllerClass
     {
-       
+        bool PrimiPodatke();
+
+        void Start();
+
+        void PokreniServer();
+
+        bool PosaljiPodatke();
+
     }
 }
