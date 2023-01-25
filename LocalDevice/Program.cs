@@ -11,7 +11,14 @@ namespace LocalDevice
     {
         static void Main(string[] args)
         {
-         
-        }
+            Console.WriteLine("local device");
+            LocalDeviceClass localDevice = new LocalDeviceClass("11", "11", 1, "11", 1, "11");
+            while (true)
+            {
+                Thread.Sleep(2000);
+                localDevice.Start();
+                localDevice.PosaljiPodatke();
+                Console.WriteLine("Podaci poslati.\n");
+            }
     }
 }
