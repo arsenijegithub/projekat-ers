@@ -16,7 +16,13 @@ namespace LocalController
     {
         static void Main(string[] args)
         {
-            
+            LocalControllerClass l = new LocalControllerClass();
+
+            Thread thread = new Thread(new ThreadStart(l.DeviceListener));
+            thread.Start();
+
+            Thread thread2 = new Thread(new ThreadStart(l.AMSMain));
+            thread2.Start();
         }
     }
 }
