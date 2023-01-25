@@ -42,7 +42,6 @@ namespace LocalController
             absolutePath = Path.Combine(dir, path);
         }
 
-
         public void ObrisiXml()
         {
             XmlDocument doc = new XmlDocument();
@@ -56,9 +55,26 @@ namespace LocalController
 
         public void AMSMain()
         {
+            while (true)
+            {
+                Thread.Sleep(5000);
+                Start();
+                PosaljiPodatke();
+                ObrisiXml();
+                Console.WriteLine("DATA SENT TO AMS");
+            }
         }
 
+        public void PokreniServer()
+        {
+            MyStream = new MyNetworkStream();
+            MyAMSStream = new MyNetworkStream();
+            IPAddress localAddr = IPAddress.Parse("127.0.0.1");
 
+            MyServer = new MyTcpListener(localAddr, 3560);
+            MyServer.Start();
+
+        }
 
         public void DeviceListener()
         {

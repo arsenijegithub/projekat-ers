@@ -19,6 +19,8 @@ namespace LocalDevice
                 localDevice.Start();
                 localDevice.PosaljiPodatke();
                 Console.WriteLine("Podaci poslati.\n");
+
             }
+        }
     }
 }
