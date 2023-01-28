@@ -57,7 +57,7 @@ namespace LocalController
         {
             while (true)
             {
-                Thread.Sleep(5000);
+                Thread.Sleep(25000);
                 Start();
                 PosaljiPodatke();
                 ObrisiXml();
