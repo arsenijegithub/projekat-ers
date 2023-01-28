@@ -57,7 +57,7 @@ namespace LocalController
         {
             while (true)
             {
-                Thread.Sleep(25000);
+                Thread.Sleep(60000);    // za testiranje je stavljeno 1 min = 60000 ms (za zadatak je potrebno 5 min = 300000 ms)
                 Start();
                 PosaljiPodatke();
                 ObrisiXml();
