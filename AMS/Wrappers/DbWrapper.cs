@@ -54,6 +54,13 @@ namespace AMS.Wrappers
             PosaljiKomandu(createTableSql);
         }
 
+        public virtual void SacuvajPodatke(List<LocalDeviceClass> allDevices)
+        {
+            foreach (LocalDeviceClass device in allDevices)
+            {
+                UbaciUTabelu(device);
+            }
+        }
 
 
     }
