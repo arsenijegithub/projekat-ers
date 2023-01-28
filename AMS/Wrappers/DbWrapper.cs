@@ -37,7 +37,11 @@ namespace AMS.Wrappers
             }
         }
 
-
+        public virtual void UbaciUTabelu(LocalDeviceClass ld)
+        {
+            var command = "insert into Local_device (Id,Type,Value,Work_time,Timestamp,LocalDeviceCode) values ('" + ld.Id + "', '" + ld.Type + "', '" + ld.WorkTime + "', '" + ld.Timestamp + "', '" + ld.LocalDeviceCode + "')";
+            PosaljiKomandu(command);
+        }
 
 
 
