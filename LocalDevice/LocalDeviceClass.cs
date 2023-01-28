@@ -140,5 +140,46 @@ namespace LocalDevice
                 return false;
             }
         }
+
+        public static void listaSvihUredjaja()
+        {
+            string putanja = @"..\..\..\data.xml";
+            string dir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string absolutePutanja = Path.Combine(dir, putanja);
+
+            XmlDocument doc = new XmlDocument();
+            doc.Load(absolutePutanja);
+            if (File.ReadAllText(absolutePutanja).Length == 0)
+            {
+                Console.WriteLine("XML datoteka je prazna");
+            }
+            else
+            {
+                Console.WriteLine("*** LISTA LOKALNIH UREDJAJA - XML DATOTEKA ***");
+                Console.WriteLine(File.ReadAllText(absolutePutanja));
+            }
+        }
+
+        public static void modifikacijaUredjaj(string idMod, string noviId)
+        {
+            string putanja = @"..\..\..\data.xml";
+            string dir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string absolutePutanja = Path.Combine(dir, putanja);
+
+            XmlDocument doc = new XmlDocument();
+            doc.Load(absolutePutanja);
+
+            XmlNode root = doc.DocumentElement;
+            XmlNode deviceID;
+
+            deviceID = doc.SelectSingleNode("data/LocalDevice[deviceID='" + idMod + "']/deviceID");
+
+            // pronasli smo deviceID za trazeni id -> Console.WriteLine("**data/item[deviceID='1']/deviceID** => " + deviceID.InnerText);
+
+            deviceID.InnerText = noviId;
+
+            doc.Save(absolutePutanja);
+        }
+
     }
 }
