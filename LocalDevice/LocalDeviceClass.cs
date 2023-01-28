@@ -85,8 +85,17 @@ namespace LocalDevice
             } while (!Type.Equals("A") || !Type.Equals("a") || !Type.Equals("D") || !Type.Equals("d"));
 
 
-            Console.WriteLine("Uneti AMS/LK.Configuration:");
-            Configuration = ConfigurationManager.AppSettings["Configuration"];
+            Console.WriteLine("Uneti AMS/LK Configuration:");
+            Configuration = Console.ReadLine();
+            if (!(Configuration.ToUpper().Equals("AMS") || Configuration.ToUpper().Equals("LK")))
+            {
+                do
+                {
+                    Console.WriteLine("Pogresan unos!");
+                    Console.WriteLine("Unesite AMS/LK:");
+                    Configuration = Console.ReadLine();
+                } while (Configuration.ToUpper().Equals("AMS") && Configuration.ToUpper().Equals("LK"));
+            }
 
 
 
@@ -102,6 +111,11 @@ namespace LocalDevice
                 byte[] value = sha256.ComputeHash(Encoding.UTF8.GetBytes(Data));
                 return Encoding.UTF8.GetString(value);
             }
+        }
+
+        public override string ToString()
+        {
+            return Id + ";" + Type + ";" + Timestamp + ";" + Value + ";" + WorkTime + ";" + Configuration;
         }
 
         public void Start()
