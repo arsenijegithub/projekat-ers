@@ -44,6 +44,16 @@ namespace AMS.Wrappers
         }
 
 
+        public virtual void KreirajTabelu()
+        {
+            string absolutePath = Path.GetFullPath(relativePath);
+            string connectionString = String.Format(@"Data Source=(LocalDB)\MSSQLLocalDB; AttachDbFilename={0};Integrated Security=True", absolutePath);
+            Console.WriteLine(connectionString);
+            Connection = new SqlConnection(connectionString);
+            string createTableSql = "CREATE TABLE LocalDevice ( Id varchar(255),Type varchar(255),Value varchar(255),Work_time decimal(13,2), Timestamp int, LocalDeviceCode varchar(255));";
+            PosaljiKomandu(createTableSql);
+        }
+
 
 
     }
