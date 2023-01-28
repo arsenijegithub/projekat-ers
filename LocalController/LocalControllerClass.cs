@@ -101,8 +101,13 @@ namespace LocalController
             {
                 return false;
             }
-        }		
+        }
 
+        public void Start()
+        {
+            MyClient.TcpClient = new TcpClient("127.0.0.1", 4160);
+            MyAMSStream.Stream = MyClient.TcpClient.GetStream();
+        }
 
 
     }

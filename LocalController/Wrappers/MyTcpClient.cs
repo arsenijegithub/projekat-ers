@@ -9,6 +9,14 @@ namespace LocalController.Wrappers
 {
     public class MyTcpClient
     {
-       
+        public TcpClient TcpClient { get; set; }
+        public MyTcpClient()
+        {
+
+        }
+        public virtual NetworkStream GetStream()
+        {
+            return TcpClient.GetStream();
+        }
     }
 }
