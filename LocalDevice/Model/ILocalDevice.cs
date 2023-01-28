@@ -8,6 +8,10 @@ namespace LocalDevice.Model
 {
     public interface ILocalDevice
     {
-       
+       string HashGenerator();
+
+        void Start();
+
+        bool PosaljiPodatke();
     }
 }

@@ -78,6 +78,29 @@ namespace LocalController
 
         public void DeviceListener()
         {
+		
+	    public bool PosaljiPodatke()
+        {
+            List<LocalDeviceClass> devices = XmlReader.UcitajXml(absolutePath);
+            BinaryFormatter bf = new BinaryFormatter();
+            byte[] objectBytes;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                bf.Serialize(ms, devices);
+                objectBytes = ms.ToArray();
+            }
+            try
+            {
+                MyAMSStream.Write(objectBytes, 0, objectBytes.Length);
+                MyAMSStream.Close();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }		
+	
             //PokreniServer();
             while (true)
             {
