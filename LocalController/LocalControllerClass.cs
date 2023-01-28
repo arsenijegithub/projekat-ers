@@ -76,12 +76,18 @@ namespace LocalController
 
         }
 
-        public void DeviceListener()
+       public void DeviceListener()
         {
-
+            PokreniServer();
+            while (true)
+            {
+                PrimiPodatke();
+                Console.WriteLine("Podaci su primljeni");
+            }
         }
+
 		
-	    public bool PosaljiPodatke()
+	public bool PosaljiPodatke()
         {
             List<LocalDeviceClass> devices = XmlReader.UcitajXml(absolutePath);
             BinaryFormatter bf = new BinaryFormatter();
@@ -102,7 +108,38 @@ namespace LocalController
                 return false;
             }
         }
+	
+	public bool PrimiPodatke()
+        {
+            try
+            {
+                MyClient.TcpClient = MyServer.AcceptTcpClient();
+                MyStream.Stream = MyClient.GetStream();
 
+                byte[] data = new byte[8192];
+                int bytes = MyStream.Read(data, 0, data.Length);
+
+                LocalDeviceClass local;
+
+                BinaryFormatter bf = new BinaryFormatter();
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    ms.Write(data, 0, data.Length);
+                    ms.Seek(0, SeekOrigin.Begin);
+                    local = (LocalDeviceClass)bf.Deserialize(ms);
+                    XmlWriter.PisiUXml(local, absolutePath);
+                }
+
+                return true;
+            }
+            catch (Exception e)
+            {
+
+                return false;
+            }
+        }
+	
+	
         public void Start()
         {
             MyClient.TcpClient = new TcpClient("127.0.0.1", 4160);

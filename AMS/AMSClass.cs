@@ -30,6 +30,7 @@ namespace AMS
             Db = new DbWrapper();
             localDevices = new List<LocalDeviceClass>();
         }
+	
 
         public void IspisiUredjaje(List<LocalDeviceClass> devices)
         {
@@ -65,6 +66,8 @@ namespace AMS
             }
             return false;
         }
+	
+		
 
         private DateTime UnixToDateTime(long timeStamp)
         {
@@ -89,6 +92,34 @@ namespace AMS
             }
             return suma;
         }
+
+	
+	public void UredjajiPrekoracili()
+        {
+            List<LocalDeviceClass> lista = new List<LocalDeviceClass>();
+            foreach (LocalDeviceClass device in localDevices)
+            {
+                if (!Provera(lista, device))
+                {
+                    lista.Add(device);
+                }
+
+            }
+
+            List<LocalDeviceClass> lista2 = new List<LocalDeviceClass>();
+            foreach (LocalDeviceClass d in lista)
+            {
+                if (d.WorkAmmount > d.WorkTime)
+                {
+                    lista2.Add(d);
+                }
+            }
+
+            IspisiUredjaje(lista2);
+        }
+
+
+	
         public bool PrimiPodatke()
         {
             try
@@ -119,7 +150,23 @@ namespace AMS
             }
         }
 
+	public void Main()
+        {
+            PokreniServer();
+            while (true)
+            {
+                PrimiPodatke();
+            }
+        }
 
+        public void PokreniServer()
+        {
+            MyStream = new MyNetworkStream();
+            IPAddress localAddr = IPAddress.Parse("127.0.0.1");
+
+            MyServer = new MyTcpListener(localAddr, 4160);
+            MyServer.Start();
+        }
        
 
     }
