@@ -24,6 +24,7 @@ namespace LocalDevice
     {
         [NonSerialized()] public MyNetworkStream MyStream;
 
+        public double WorkAmmount { get; set; }
         public string Id { get; set; }
         public string Type { get; set; }
         public long Timestamp { get; set; }
@@ -33,7 +34,7 @@ namespace LocalDevice
         public string LocalDeviceCode { get; set; }
 
 
-        public LocalDeviceClass(string id, string type, long timeStamp, string value, double workingTime, string configuration)
+        public LocalDeviceClass(string id, string type, long timeStamp, string value, double workingTime, string configuration, double workAmmount)
         {
             MyStream = new MyNetworkStream();
             Id = id;
@@ -44,6 +45,7 @@ namespace LocalDevice
             Timestamp = ((DateTimeOffset)DateTime.Now).ToUnixTimeSeconds();
             LocalDeviceCode = HashGenerator();
             Configuration = "LK";
+            WorkAmmount = workAmmount;
 
         }
 
