@@ -20,6 +20,7 @@ namespace AMS
             option = Convert.ToInt32(Console.ReadLine());
             return option;
         }
+
         static void Main(string[] args)
         {
             AMSClass ams = new AMSClass();
