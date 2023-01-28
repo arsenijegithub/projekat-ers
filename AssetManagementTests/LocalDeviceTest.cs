@@ -43,6 +43,50 @@ namespace AssetManagementTests
             Assert.AreEqual(actualHash, hash);
 
         }
+
+
+	[Test]
+        public void PosaljiPodatke_ReturnsFalse()
+        {
+            //Arrange
+            LocalDeviceClass localDevice = new LocalDeviceClass("2", "2", 2, "2", 2, "2");
+
+            var stream = new Mock<MyNetworkStream>();
+            stream.Setup(x => x.Write(It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>())).Throws(new Exception());
+
+            localDevice.MyStream = (MyNetworkStream)stream.Object;
+
+            //Act
+            bool result = localDevice.PosaljiPodatke();
+
+
+            //Assert
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void PosaljiPodatke_ReturnsTrue()
+        {
+            //Arrange
+            LocalDeviceClass localDevice = new LocalDeviceClass("2", "2", 2, "2", 2, "2");
+
+            var stream = new Mock<MyNetworkStream>();
+            stream.Setup(x => x.Write(It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>())).Verifiable();
+            stream.Setup(x => x.Close()).Verifiable();
+
+
+            localDevice.MyStream = stream.Object;
+
+            //Act
+            bool result = localDevice.PosaljiPodatke();
+
+
+            //Assert
+            Assert.IsTrue(result);
+        }
+
+
+	
     }
 }
 
