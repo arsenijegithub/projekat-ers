@@ -26,6 +26,60 @@ namespace AssetManagementTests
             Assert.IsNotNull(localController.MyAMSStream);
         }
 
+         public void PosaljiPodatke_RetursnTrue()
+        {
+            //Arrange
+            LocalControllerClass localController = new LocalControllerClass();
+
+            var xml = new Mock<MyXmlReader>();
+            xml.Setup(x => x.UcitajXml(It.IsAny<string>())).Returns(new List<LocalDeviceClass>());
+
+            var stream = new Mock<MyNetworkStream>();
+            stream.Setup(x => x.Write(It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>())).Verifiable();
+            stream.Setup(x => x.Close()).Verifiable();
+
+            localController.XmlReader = xml.Object;
+            localController.MyAMSStream = stream.Object;
+
+
+
+            //Act
+            bool resutl = localController.PosaljiPodatke();
+
+
+            //Assert
+
+            Assert.IsTrue(resutl);
+        }
+
+
+        [Test]
+        public void PosaljiPodatke_RetursnFalse()
+        {
+            //Arrange
+            LocalControllerClass localController = new LocalControllerClass();
+
+            var xml = new Mock<MyXmlReader>();
+            xml.Setup(x => x.UcitajXml(It.IsAny<string>())).Returns(new List<LocalDeviceClass>());
+
+            var stream = new Mock<MyNetworkStream>();
+            stream.Setup(x => x.Write(It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>())).Throws(new Exception());
+            stream.Setup(x => x.Close()).Verifiable();
+
+            localController.XmlReader = xml.Object;
+            localController.MyAMSStream = stream.Object;
+
+
+
+            //Act
+            bool resutl = localController.PosaljiPodatke();
+
+
+            //Assert
+
+            Assert.IsFalse(resutl);
+        }
+
         [Test]
         public void PrimiPodatke_ReturnsFalse()
         {
@@ -61,6 +115,7 @@ namespace AssetManagementTests
             //Assert
             Assert.IsFalse(result);
         }
+
 
 
 

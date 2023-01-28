@@ -11,6 +11,15 @@ namespace AssetManagementTests
     [TestFixture]
     public class LocalDeviceTest
     {
+        [Test]
+        public void LocalDeviceConstructorTest()
+        {
+            LocalDeviceClass localDevice = new LocalDeviceClass("1", "1", 1, "1", 1, "1");
+
+            Assert.IsNotEmpty(localDevice.LocalDeviceCode);
+            Assert.IsNotNull(localDevice.MyStream);
+            Assert.IsNotEmpty(localDevice.Configuration);
+        }
 
         [Test]
         public void HashGenerator_ReturnsHash()
