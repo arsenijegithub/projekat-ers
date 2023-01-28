@@ -78,6 +78,8 @@ namespace LocalController
 
         public void DeviceListener()
         {
+
+        }
 		
 	    public bool PosaljiPodatke()
         {
@@ -100,14 +102,7 @@ namespace LocalController
                 return false;
             }
         }		
-	
-            //PokreniServer();
-            while (true)
-            {
-               // PrimiPodatke();
-                Console.WriteLine("PodaciPrimljeni");
-            }
-        }
+
 
 
     }
