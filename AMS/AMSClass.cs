@@ -66,7 +66,29 @@ namespace AMS
             return false;
         }
 
+        private DateTime UnixToDateTime(long timeStamp)
+        {
+            DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            dateTime = dateTime.AddSeconds(timeStamp).ToLocalTime();
+            return dateTime;
+        }
+        public double BrojRadnihSati(string id, DateTime startDate, DateTime endDate)
+        {
+            double suma = 0;
+            foreach (LocalDeviceClass device in localDevices)
+            {
+                if (device.Id == id)
+                {
+                    DateTime dateTime = UnixToDateTime(device.Timestamp);
+                    if (dateTime > startDate && dateTime < endDate)
+                    {
+                        suma += device.WorkTime;
+                    }
 
+                }
+            }
+            return suma;
+        }
         public bool PrimiPodatke()
         {
             try
