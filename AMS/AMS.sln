@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocalDevice", "..\LocalDevi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AssetManagementTests", "..\..\..\..\..\Desktop\projekat-ers-projekat\AssetManagementTests\AssetManagementTests.csproj", "{C21F677A-6691-4B53-8BBB-C67C13889FB2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmsTEST", "..\AmsTEST\AmsTEST.csproj", "{1EBEE246-4E80-4C6F-B3E1-78CECF68AFE5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{C21F677A-6691-4B53-8BBB-C67C13889FB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C21F677A-6691-4B53-8BBB-C67C13889FB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C21F677A-6691-4B53-8BBB-C67C13889FB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EBEE246-4E80-4C6F-B3E1-78CECF68AFE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EBEE246-4E80-4C6F-B3E1-78CECF68AFE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EBEE246-4E80-4C6F-B3E1-78CECF68AFE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EBEE246-4E80-4C6F-B3E1-78CECF68AFE5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
