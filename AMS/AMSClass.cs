@@ -72,19 +72,31 @@ namespace AMS
             try
             {
                 TcpClient client = MyServer.AcceptTcpClient();
-                //MyStream.Stream = client.GetStream();
+                MyStream.Stream = client.GetStream();
 
                 byte[] data = new byte[8192];
-               // int bytes = MyStream.Read(data, 0, data.Length);
+                int bytes = MyStream.Read(data, 0, data.Length);
 
-                List<LocalDeviceClass> localDevices = new List<LocalDeviceClass>();
+                List<LocalDeviceClass> ld = new List<LocalDeviceClass>();
 
                 BinaryFormatter bf = new BinaryFormatter();
-            }
-            catch { }
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    ms.Write(data, 0, data.Length);
+                    ms.Seek(0, SeekOrigin.Begin);
+                    ld = (List<LocalDeviceClass>)bf.Deserialize(ms);
+                    localDevices.AddRange(ld);
+                }
 
-            return false;
+                return true;
+            }
+            catch (Exception e)
+            {
+
+                return false;
+            }
         }
+
 
        
 
