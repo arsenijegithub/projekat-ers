@@ -22,15 +22,3 @@ C:\Users\Arsenije\Desktop\aaa\projekat-ers-projekat\LocalController\obj\Debug\Lo
 C:\Users\Arsenije\Desktop\aaa\projekat-ers-projekat\LocalController\obj\Debug\LocalController.csproj.CopyComplete
 C:\Users\Arsenije\Desktop\aaa\projekat-ers-projekat\LocalController\obj\Debug\LocalController.exe
 C:\Users\Arsenije\Desktop\aaa\projekat-ers-projekat\LocalController\obj\Debug\LocalController.pdb
-C:\Users\Arsenije\source\repos\arsenijegithub\projekat-ers\LocalController\bin\Debug\LocalController.exe.config
-C:\Users\Arsenije\source\repos\arsenijegithub\projekat-ers\LocalController\bin\Debug\LocalController.exe
-C:\Users\Arsenije\source\repos\arsenijegithub\projekat-ers\LocalController\bin\Debug\LocalController.pdb
-C:\Users\Arsenije\source\repos\arsenijegithub\projekat-ers\LocalController\bin\Debug\LocalDevice.exe
-C:\Users\Arsenije\source\repos\arsenijegithub\projekat-ers\LocalController\bin\Debug\LocalDevice.pdb
-C:\Users\Arsenije\source\repos\arsenijegithub\projekat-ers\LocalController\bin\Debug\LocalDevice.exe.config
-C:\Users\Arsenije\source\repos\arsenijegithub\projekat-ers\LocalController\obj\Debug\LocalController.csproj.AssemblyReference.cache
-C:\Users\Arsenije\source\repos\arsenijegithub\projekat-ers\LocalController\obj\Debug\LocalController.csproj.SuggestedBindingRedirects.cache
-C:\Users\Arsenije\source\repos\arsenijegithub\projekat-ers\LocalController\obj\Debug\LocalController.csproj.CoreCompileInputs.cache
-C:\Users\Arsenije\source\repos\arsenijegithub\projekat-ers\LocalController\obj\Debug\LocalController.csproj.CopyComplete
-C:\Users\Arsenije\source\repos\arsenijegithub\projekat-ers\LocalController\obj\Debug\LocalController.exe
-C:\Users\Arsenije\source\repos\arsenijegithub\projekat-ers\LocalController\obj\Debug\LocalController.pdb
