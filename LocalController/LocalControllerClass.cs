@@ -37,7 +37,7 @@ namespace LocalController
             XmlWriter = new MyXmlWriter();
             XmlReader = new MyXmlReader();
             MyAMSStream = new MyNetworkStream();
-            string path = "data.xml";
+            string path = @"..\..\..\data.xml";
             string dir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             absolutePath = Path.Combine(dir, path);
         }

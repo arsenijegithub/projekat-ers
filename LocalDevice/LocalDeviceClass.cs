@@ -86,6 +86,8 @@ namespace LocalDevice
                 }
             } while (!Type.Equals("A") || !Type.Equals("a") || !Type.Equals("D") || !Type.Equals("d"));
 
+            Console.WriteLine("Unesite broj radnih sati uredjaja");
+            WorkAmmount = Convert.ToInt32(Console.ReadLine());
 
             Console.WriteLine("Uneti AMS/LK Configuration:");
             Configuration = Console.ReadLine();
@@ -132,7 +134,7 @@ namespace LocalDevice
                 client = new TcpClient("127.0.0.1", 4160);
             }
 
-            //MyStream.Stream = client.GetStream();
+            MyStream.Stream = client.GetStream();
         }
 
         public bool PosaljiPodatke()
@@ -147,8 +149,8 @@ namespace LocalDevice
             }
             try
             {
-                //MyStream.Write(bytes, 0, bytes.Length);
-               // MyStream.Close();
+                MyStream.Write(bytes, 0, bytes.Length);
+                MyStream.Close();
                 return true;
             }
             catch (Exception e)

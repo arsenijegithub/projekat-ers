@@ -30,44 +30,7 @@ namespace AMS
             Db = new DbWrapper();
             localDevices = new List<LocalDeviceClass>();
         }
-	
 
-        public void IspisiUredjaje(List<LocalDeviceClass> devices)
-        {
-            foreach (LocalDeviceClass d in devices)
-            {
-                Console.WriteLine(d);
-            }
-        }
-
-        public void Ispisi()
-        {
-            List<LocalDeviceClass> lista = new List<LocalDeviceClass>();
-            foreach (LocalDeviceClass device in localDevices)
-            {
-                if (!Provera(lista, device))
-                {
-                    lista.Add(device);
-                }
-
-            }
-            IspisiUredjaje(lista);
-
-        }
-        public bool Provera(List<LocalDeviceClass> devices, LocalDeviceClass device)
-        {
-            foreach (LocalDeviceClass d in devices)
-            {
-                if (d.Id == device.Id)
-                {
-                    return true;
-                }
-
-            }
-            return false;
-        }
-	
-		
 
         private DateTime UnixToDateTime(long timeStamp)
         {
@@ -93,8 +56,30 @@ namespace AMS
             return suma;
         }
 
-	
-	public void UredjajiPrekoracili()
+        public void IspisiUredjaje(List<LocalDeviceClass> devices)
+        {
+            foreach (LocalDeviceClass d in devices)
+            {
+                Console.WriteLine(d);
+            }
+        }
+
+        public void Ispisi()
+        {
+            List<LocalDeviceClass> lista = new List<LocalDeviceClass>();
+            foreach (LocalDeviceClass device in localDevices)
+            {
+                if (!Provera(lista, device))
+                {
+                    lista.Add(device);
+                }
+
+            }
+            IspisiUredjaje(lista);
+
+        }
+
+        public void UredjajiPrekoracili()
         {
             List<LocalDeviceClass> lista = new List<LocalDeviceClass>();
             foreach (LocalDeviceClass device in localDevices)
@@ -116,6 +101,20 @@ namespace AMS
             }
 
             IspisiUredjaje(lista2);
+        }
+
+
+        public bool Provera(List<LocalDeviceClass> devices, LocalDeviceClass device)
+        {
+            foreach (LocalDeviceClass d in devices)
+            {
+                if (d.Id == device.Id)
+                {
+                    return true;
+                }
+
+            }
+            return false;
         }
 
 

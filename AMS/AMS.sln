@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocalController", "..\Local
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocalDevice", "..\LocalDevice\LocalDevice.csproj", "{91BFD1BB-491A-41BB-B228-A01CA57E3D9C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AssetManagementTests", "..\..\..\..\..\Desktop\projekat-ers-projekat\AssetManagementTests\AssetManagementTests.csproj", "{C21F677A-6691-4B53-8BBB-C67C13889FB2}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmsTEST", "..\AmsTEST\AmsTEST.csproj", "{1EBEE246-4E80-4C6F-B3E1-78CECF68AFE5}"
 EndProject
 Global
@@ -31,10 +29,6 @@ Global
 		{91BFD1BB-491A-41BB-B228-A01CA57E3D9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91BFD1BB-491A-41BB-B228-A01CA57E3D9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91BFD1BB-491A-41BB-B228-A01CA57E3D9C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C21F677A-6691-4B53-8BBB-C67C13889FB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C21F677A-6691-4B53-8BBB-C67C13889FB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C21F677A-6691-4B53-8BBB-C67C13889FB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C21F677A-6691-4B53-8BBB-C67C13889FB2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1EBEE246-4E80-4C6F-B3E1-78CECF68AFE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1EBEE246-4E80-4C6F-B3E1-78CECF68AFE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1EBEE246-4E80-4C6F-B3E1-78CECF68AFE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
