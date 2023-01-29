@@ -1,0 +1,41 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "91bfd1bb-491a-41bb-b228-a01ca57e3d9c": {
+      "ProjectGuid": "91bfd1bb-491a-41bb-b228-a01ca57e3d9c",
+      "DisplayName": "LocalDevice",
+      "ColorIndex": 0
+    },
+    "72fca231-1faf-4c51-ae0e-1730d595c431": {
+      "ProjectGuid": "72fca231-1faf-4c51-ae0e-1730d595c431",
+      "DisplayName": "AMS",
+      "ColorIndex": 1
+    },
+    "51807a60-5424-4655-a8b3-39bbb4055e91": {
+      "ProjectGuid": "51807a60-5424-4655-a8b3-39bbb4055e91",
+      "DisplayName": "LocalController",
+      "ColorIndex": 2
+    },
+    "db0082cb-9c24-48c3-8033-100ad2aa068c": {
+      "ProjectGuid": "db0082cb-9c24-48c3-8033-100ad2aa068c",
+      "DisplayName": "TestAMS",
+      "ColorIndex": 3
+    },
+    "f9c7bc28-7fe1-420c-9a68-8e88c1168180": {
+      "ProjectGuid": "f9c7bc28-7fe1-420c-9a68-8e88c1168180",
+      "DisplayName": "AssetManagementTests",
+      "ColorIndex": 4
+    },
+    "dc3bb230-8be1-4cae-99ba-c1d60b9301b8": {
+      "ProjectGuid": "dc3bb230-8be1-4cae-99ba-c1d60b9301b8",
+      "DisplayName": "TestLocalDevice",
+      "ColorIndex": 5
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Miscellaneous Files",
+      "ColorIndex": -1
+    }
+  },
+  "NextColorIndex": 6
+}

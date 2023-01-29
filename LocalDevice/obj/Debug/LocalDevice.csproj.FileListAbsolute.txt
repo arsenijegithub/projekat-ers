@@ -1,0 +1,16 @@
+C:\Users\Borisa\Desktop\ERS\HELP\projekat-ers-projekat\LocalDevice\bin\Debug\LocalDevice.exe.config
+C:\Users\Borisa\Desktop\ERS\HELP\projekat-ers-projekat\LocalDevice\bin\Debug\LocalDevice.exe
+C:\Users\Borisa\Desktop\ERS\HELP\projekat-ers-projekat\LocalDevice\bin\Debug\LocalDevice.pdb
+C:\Users\Borisa\Desktop\ERS\HELP\projekat-ers-projekat\LocalDevice\obj\Debug\LocalDevice.csproj.SuggestedBindingRedirects.cache
+C:\Users\Borisa\Desktop\ERS\HELP\projekat-ers-projekat\LocalDevice\obj\Debug\LocalDevice.csproj.CoreCompileInputs.cache
+C:\Users\Borisa\Desktop\ERS\HELP\projekat-ers-projekat\LocalDevice\obj\Debug\LocalDevice.exe
+C:\Users\Borisa\Desktop\ERS\HELP\projekat-ers-projekat\LocalDevice\obj\Debug\LocalDevice.pdb
+C:\Users\Borisa\Desktop\ERS\HELP\projekat-ers-projekat\LocalDevice\obj\Debug\LocalDevice.csproj.AssemblyReference.cache
+C:\Users\Arsenije\Desktop\aaa\projekat-ers-projekat\LocalDevice\bin\Debug\LocalDevice.exe.config
+C:\Users\Arsenije\Desktop\aaa\projekat-ers-projekat\LocalDevice\bin\Debug\LocalDevice.exe
+C:\Users\Arsenije\Desktop\aaa\projekat-ers-projekat\LocalDevice\bin\Debug\LocalDevice.pdb
+C:\Users\Arsenije\Desktop\aaa\projekat-ers-projekat\LocalDevice\obj\Debug\LocalDevice.csproj.AssemblyReference.cache
+C:\Users\Arsenije\Desktop\aaa\projekat-ers-projekat\LocalDevice\obj\Debug\LocalDevice.csproj.SuggestedBindingRedirects.cache
+C:\Users\Arsenije\Desktop\aaa\projekat-ers-projekat\LocalDevice\obj\Debug\LocalDevice.csproj.CoreCompileInputs.cache
+C:\Users\Arsenije\Desktop\aaa\projekat-ers-projekat\LocalDevice\obj\Debug\LocalDevice.exe
+C:\Users\Arsenije\Desktop\aaa\projekat-ers-projekat\LocalDevice\obj\Debug\LocalDevice.pdb
