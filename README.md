@@ -1,3 +1,3 @@
-# AMS Projekat
+# [ERS] - Projekat - Asset Management System
 
-Cowrite by Anabela
+Solution je u AMS folderu
